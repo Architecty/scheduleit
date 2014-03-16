@@ -1,0 +1,14 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\SliderBar.cs">
+    <Files>
+      <File FileName="Assets\Scripts\ParseSchedule.cs" Line="112" Column="58" />
+      <File FileName="Assets\Scripts\MiscClasses.cs" Line="30" Column="65" />
+      <File FileName="Assets\Scripts\SliderBar.cs" Line="63" Column="78" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
