@@ -18,7 +18,10 @@ public class SliderBar : MonoBehaviour {
 
 	public Material doneMat;
 	public Material inProcessMat;
-	public Material critMat;
+	public Material doneMatCrit;
+	public Material inProcessMatCrit;
+	public Material matCrit;
+	public Material matNorm;
 
 	DateTime currentDate;
 
@@ -36,6 +39,7 @@ public class SliderBar : MonoBehaviour {
 		Debug.Log(setCurrentDate(currentValue, StartDate, EndDate));
 
 		slideByTrigger();
+
 
 	}
 
@@ -69,45 +73,84 @@ public class SliderBar : MonoBehaviour {
 			if(diff <= -2){
 				if(whichActivity.state != 0){
 					whichActivity.state = 0;
-					updateRenderer(whichActivity.modelObjects, whichActivity.state);
+					updateRenderer(whichActivity.modelObjects, whichActivity.state, whichActivity.Float);
 				}
 			}
 			else if(diff < 2){
 				if(whichActivity.state != 1){
 					whichActivity.state = 1;
-					updateRenderer(whichActivity.modelObjects, whichActivity.state);
+					updateRenderer(whichActivity.modelObjects, whichActivity.state, whichActivity.Float);
 				}
 			}
 			else{
 				if(whichActivity.state != 2){
 					whichActivity.state = 2;
-					updateRenderer(whichActivity.modelObjects, whichActivity.state);
+					updateRenderer(whichActivity.modelObjects, whichActivity.state, whichActivity.Float);
 				}
 			}
 
 		}
 	}
 
-	void updateRenderer(List<ModelObject> objectArray, int whichValue){
+	void updateRenderer(List<ModelObject> objectArray, int whichValue, string projFloat){
+		float tempFloat = float.Parse(projFloat);
+
+//		foreach(ModelObject obj in objectArray){
+//			if(obj.modelElement.renderer.material.name == "blank"){
+//				if(tempFloat <= 0){
+//					obj.modelElement.renderer.material = matCrit;
+//				}
+//				else{
+//					obj.modelElement.renderer.material = matNorm;
+//				}
+//			}
+//		}
+
+		Material tempDoneMat = (tempFloat <= 0)?doneMatCrit:doneMat;
+		Material tempProcessMat = (tempFloat <= 0)?inProcessMatCrit:inProcessMat;
 		switch(whichValue){
 		case 0:
 			foreach(ModelObject obj in objectArray){
+//				StartCoroutine(changeTransparency(obj.modelElement.renderer, .5F));
 				obj.modelElement.renderer.enabled = true;
-				obj.modelElement.renderer.material = doneMat;
+				obj.modelElement.renderer.material = tempDoneMat;
 			}
 			break;
 		case 1:
 			foreach(ModelObject obj in objectArray){
+//				StartCoroutine(changeTransparency(obj.modelElement.renderer, 1F));
 				obj.modelElement.renderer.enabled = true;
-				obj.modelElement.renderer.material = inProcessMat;
+				obj.modelElement.renderer.material = tempProcessMat;
 			}
 			break;
 		case 2:
 			foreach(ModelObject obj in objectArray){
+//				StartCoroutine(changeTransparency(obj.modelElement.renderer, 0F));
 				obj.modelElement.renderer.enabled = false;
 			}
 			break;
 		}
 	}
+
+	IEnumerator changeTransparency(Renderer whichObj, float endState){
+		Debug.Log ("Starting Trans");
+		float StartTime = Time.time;
+		float fadeTime = 1F;
+		float startingAlpha = whichObj.material.color.a;
+		Color startingColor = whichObj.material.color;
+		Color newColor;
+
+		while(Time.time - StartTime < fadeTime){
+			Debug.Log (startingColor.a);
+			newColor = new Color(startingColor.r, startingColor.g, startingColor.b, Mathf.Lerp (startingAlpha, endState, (Time.time-StartTime)/fadeTime));
+
+			whichObj.material.color = newColor;
+			yield return null;
+		}
+		newColor = new Color(startingColor.r, startingColor.g, startingColor.b, endState);
+		whichObj.material.color = newColor;
+		yield return null;
+	}
+
 
 }
